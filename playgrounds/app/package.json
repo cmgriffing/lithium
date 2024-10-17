@@ -7,10 +7,12 @@
     "start": "vinxi start"
   },
   "dependencies": {
+    "@corvu/resizable": "^0.2.3",
     "@kobalte/core": "^0.13.7",
     "@solid-primitives/storage": "^4.2.1",
     "@solidjs/router": "^0.14.7",
     "@solidjs/start": "^1.0.8",
+    "@thednp/solid-color-picker": "^0.0.12",
     "autoprefixer": "^10.4.19",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -21,6 +23,8 @@
     "remotion": "^4.0.221",
     "shiki": "^1.21.0",
     "shiki-magic-move": "workspace:*",
+    "solid-color": "^0.0.4",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.9.1",
     "tailwind-merge": "^2.5.3",
     "tailwindcss": "^3.4.3",

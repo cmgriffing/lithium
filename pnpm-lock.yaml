@@ -174,6 +174,9 @@ importers:
 
   playgrounds/app:
     dependencies:
+      '@corvu/resizable':
+        specifier: ^0.2.3
+        version: 0.2.3(solid-js@1.9.2)
       '@kobalte/core':
         specifier: ^0.13.7
         version: 0.13.7(solid-js@1.9.2)
@@ -186,6 +189,9 @@ importers:
       '@solidjs/start':
         specifier: ^1.0.8
         version: 1.0.8(solid-js@1.9.2)(vinxi@0.4.3(@types/node@22.7.5)(ioredis@5.4.1)(terser@5.34.1))(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
+      '@thednp/solid-color-picker':
+        specifier: ^0.0.12
+        version: 0.0.12(solid-js@1.9.2)
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.47)
@@ -216,6 +222,12 @@ importers:
       shiki-magic-move:
         specifier: workspace:*
         version: link:../../packages/shiki-magic-move
+      solid-color:
+        specifier: ^0.0.4
+        version: 0.0.4(solid-js@1.9.2)
+      solid-icons:
+        specifier: ^1.1.0
+        version: 1.1.0(solid-js@1.9.2)
       solid-js:
         specifier: ^1.9.1
         version: 1.9.2
@@ -539,6 +551,11 @@ packages:
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
     engines: {node: '>=16.13'}
+
+  '@corvu/resizable@0.2.3':
+    resolution: {integrity: sha512-UwpObxqKlx1mc3G496Daz9NjK25Gx1V5fB8zIGazbq5tJs7aU8RjPW4png5OoNpMyxV7GQWjQtVc59zaAEVAJg==}
+    peerDependencies:
+      solid-js: ^1.8
 
   '@corvu/utils@0.4.2':
     resolution: {integrity: sha512-Ox2kYyxy7NoXdKWdHeDEjZxClwzO4SKM8plAaVwmAJPxHMqA0rLOoAsa+hBDwRLpctf+ZRnAd/ykguuJidnaTA==}
@@ -2114,6 +2131,22 @@ packages:
 
   '@swc/helpers@0.5.13':
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
+
+  '@thednp/color-picker@2.0.2':
+    resolution: {integrity: sha512-IBoeewOWe8TNSrM50BDYqHJHcVLt6uAm+CJHi5mk8S2E3gmO19clHGbMSSGZxE4fOc5P2SXGChnIDr1CbOnWNQ==}
+
+  '@thednp/color@1.0.11':
+    resolution: {integrity: sha512-ixfF5gpR/kHf/5aVqNuCbrnGfXygbQIKMmLMAn1OnZoS1bGIg5UAF3O5MsBeDy8LCgS4M5Ykpxg7AcvRWN4FMQ==}
+
+  '@thednp/shorty@2.0.4':
+    resolution: {integrity: sha512-7iMeqgiHOTjAWLcl/rbWHgquHnvfawT2gExdAa1TLjZMGcFjx00FZkg6CHuMjLh9ayBnlgabC4Dsx0DV+h9yqQ==}
+    engines: {node: '>=16', pnpm: '>=8.6.0'}
+
+  '@thednp/solid-color-picker@0.0.12':
+    resolution: {integrity: sha512-UdGzemxoML6+O59/2IBJDtENFd0sKbUL7uDsEgv6ijahai2hABpOPaI53bWw2nIVJ+MRp6tB5J3YfGQR70BNNw==}
+    engines: {node: '>=18', pnpm: '>=8.6.0'}
+    peerDependencies:
+      solid-js: ^1.6.0
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -5512,6 +5545,16 @@ packages:
   smob@1.5.0:
     resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==}
 
+  solid-color@0.0.4:
+    resolution: {integrity: sha512-hFZ0E0v6OYiuxc73txwlN8NB1KoeEU3mw5rwBfk3eJ8Kr/yY7h4G7X/QZ1xhnmOeVmam8lHk8iTujee8BeWSOw==}
+    peerDependencies:
+      solid-js: '>=1.0.0'
+
+  solid-icons@1.1.0:
+    resolution: {integrity: sha512-IesTfr/F1ElVwH2E1110s2RPXH4pujKfSs+koT8rwuTAdleO5s26lNSpqJV7D1+QHooJj18mcOiz2PIKs0ic+A==}
+    peerDependencies:
+      solid-js: '*'
+
   solid-js@1.9.2:
     resolution: {integrity: sha512-fe/K03nV+kMFJYhAOE8AIQHcGxB4rMIEoEyrulbtmf217NffbbwBqJnJI4ovt16e+kaIt0czE2WA7mP/pYN9yg==}
 
@@ -6967,6 +7010,11 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
+  '@corvu/resizable@0.2.3(solid-js@1.9.2)':
+    dependencies:
+      '@corvu/utils': 0.4.2(solid-js@1.9.2)
+      solid-js: 1.9.2
+
   '@corvu/utils@0.4.2(solid-js@1.9.2)':
     dependencies:
       '@floating-ui/dom': 1.6.11
@@ -8205,6 +8253,22 @@ snapshots:
   '@swc/helpers@0.5.13':
     dependencies:
       tslib: 2.7.0
+
+  '@thednp/color-picker@2.0.2':
+    dependencies:
+      '@thednp/color': 1.0.11
+      '@thednp/shorty': 2.0.4
+
+  '@thednp/color@1.0.11': {}
+
+  '@thednp/shorty@2.0.4': {}
+
+  '@thednp/solid-color-picker@0.0.12(solid-js@1.9.2)':
+    dependencies:
+      '@thednp/color': 1.0.11
+      '@thednp/color-picker': 2.0.2
+      '@thednp/shorty': 2.0.4
+      solid-js: 1.9.2
 
   '@tootallnate/once@2.0.0': {}
 
@@ -12307,6 +12371,14 @@ snapshots:
       is-fullwidth-code-point: 5.0.0
 
   smob@1.5.0: {}
+
+  solid-color@0.0.4(solid-js@1.9.2):
+    dependencies:
+      solid-js: 1.9.2
+
+  solid-icons@1.1.0(solid-js@1.9.2):
+    dependencies:
+      solid-js: 1.9.2
 
   solid-js@1.9.2:
     dependencies:
