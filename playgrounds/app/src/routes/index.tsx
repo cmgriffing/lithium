@@ -1,12 +1,5 @@
-import { A } from '@solidjs/router'
-import { createEffect, createMemo, createResource, createSignal, onCleanup, Show } from 'solid-js'
-import {
-  type HighlighterCore,
-  createHighlighter,
-  getHighlighter,
-  bundledThemes,
-  bundledLanguages,
-} from 'shiki'
+import { createResource, createSignal, onCleanup, Show } from 'solid-js'
+import { createHighlighter, getHighlighter, bundledThemes, bundledLanguages } from 'shiki'
 import { ShikiMagicMove } from 'shiki-magic-move/solid'
 import { makePersisted } from '@solid-primitives/storage'
 import { interpolate, interpolateColors, Easing } from 'remotion'
@@ -27,14 +20,11 @@ import { Button } from '~/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs'
 import { TextField, TextFieldLabel, TextFieldTextArea } from '~/components/ui/text-field'
 import { MagicMoveElement } from 'shiki-magic-move/types'
-import { Resizable, ResizableHandle, ResizablePanel } from '~/components/ui/resizable'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -49,10 +39,9 @@ import {
   SliderValueLabel,
 } from '~/components/ui/slider'
 import clsx from 'clsx'
-import { TbCheck, TbCheckbox, TbSettings } from 'solid-icons/tb'
+import { TbSettings } from 'solid-icons/tb'
 import { Checkbox } from '~/components/ui/checkbox'
 import { Label } from '~/components/ui/label'
-import { DefaultColorPicker } from '@thednp/solid-color-picker'
 
 const animationSeconds = 1
 const animationFPS = 10
@@ -102,7 +91,7 @@ export default defineComponent({
 </style>`
 
 export default function Home() {
-  const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('output')
+  const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('snippets')
   const [toggled, setToggled] = createSignal(false)
   const [theme, setTheme] = makePersisted(createSignal('nord'), { name: 'theme' })
   const [language, setLanguage] = makePersisted(createSignal('typescript'), {
@@ -122,15 +111,34 @@ export default function Home() {
   const [code, setCode] = createSignal(startCode())
   const [isResizing, setIsResizing] = createSignal(false)
   const [isLooping, setIsLooping] = createSignal(true)
-  const [bgColor, setBgColor] = createSignal('#ffffff')
-  const [xPadding, setXPadding] = createSignal(42)
-  const [yPadding, setYPadding] = createSignal(42)
-  const [shadowEnabled, setShadowEnabled] = createSignal(true)
-  const [shadowOffsetY, setShadowOffsetY] = createSignal(10)
-  const [shadowBlur, setShadowBlur] = createSignal(10)
-  const [shadowColor, setShadowColor] = createSignal('#000000')
-  const [shadowOpacity, setShadowOpacity] = createSignal(0.6)
-  const [snippetWidth, setSnippetWidth] = createSignal(450)
+
+  const [bgColor, setBgColor] = makePersisted(createSignal('#ffffff'), {
+    name: 'bgColor',
+  })
+  const [xPadding, setXPadding] = makePersisted(createSignal(42), {
+    name: 'xPadding',
+  })
+  const [yPadding, setYPadding] = makePersisted(createSignal(42), {
+    name: 'yPadding',
+  })
+  const [shadowEnabled, setShadowEnabled] = makePersisted(createSignal(true), {
+    name: 'shadowEnabled',
+  })
+  const [shadowOffsetY, setShadowOffsetY] = makePersisted(createSignal(10), {
+    name: 'shadowOffsetY',
+  })
+  const [shadowBlur, setShadowBlur] = makePersisted(createSignal(10), {
+    name: 'shadowBlur',
+  })
+  const [shadowColor, setShadowColor] = makePersisted(createSignal('#000000'), {
+    name: 'shadowColor',
+  })
+  const [shadowOpacity, setShadowOpacity] = makePersisted(createSignal(0.6), {
+    name: 'shadowOpacity',
+  })
+  const [snippetWidth, setSnippetWidth] = makePersisted(createSignal(450), {
+    name: 'snippetWidth',
+  })
 
   const [highlighter] = createResource(async () => {
     const newHighlighter = await createHighlighter({
@@ -482,9 +490,25 @@ export default function Home() {
                       actualFrame,
                       maxContainerDimensions()?.width || 100,
                       maxContainerDimensions()?.height || 100,
-                      backgroundColor,
-                      fontSize,
-                      fontFamily,
+                      {
+                        layout: {
+                          yPadding: yPadding(),
+                          xPadding: xPadding(),
+                        },
+                        shadow: {
+                          shadowEnabled: shadowEnabled(),
+                          shadowOffsetY: shadowOffsetY(),
+                          shadowBlur: shadowBlur(),
+                          shadowColor: shadowColor(),
+                          shadowOpacity: shadowOpacity(),
+                        },
+                        styling: {
+                          fontSize,
+                          fontFamily,
+                          snippetBackgroundColor: backgroundColor,
+                          backgroundColor: bgColor(),
+                        },
+                      },
                     )
 
                     canvasFrames.push(canvas)
@@ -494,19 +518,6 @@ export default function Home() {
                     // workerUrl,
                     width: canvasFrames[0].width,
                     height: canvasFrames[0].height,
-                    // frames: canvasFrames.map((canvas) => {
-                    //   // const frame = new Frame(canvas)
-                    //   const ctx = canvas.getContext("2d");
-                    //   return {
-                    //     data: ctx!.getImageData(
-                    //       0,
-                    //       0,
-                    //       canvas.width,
-                    //       canvas.height
-                    //     ),
-                    //     delay: 1000 / animationFPS,
-                    //   };
-                    // }),
                     frames: canvasFrames.map((canvas, i) => {
                       return { data: canvas }
                     }),
@@ -595,21 +606,6 @@ export default function Home() {
                           onMouseDown={e => {
                             setIsResizing(true)
                           }}
-                          // draggable={true}
-                          // onDragOver={e => {
-                          //   e.preventDefault()
-                          // }}
-                          // onDragStart={e => {
-                          //   // e.preventDefault()
-                          //   setIsResizing(true)
-                          // }}
-                          // onDrag={e => {
-                          //   const deltaX = e.offsetX
-                          //   setSnippetWidth(snippetWidth() + deltaX)
-                          // }}
-                          // onDragEnd={e => {
-                          //   setIsResizing(false)
-                          // }}
                         ></div>
                       </>
                     )}
@@ -641,29 +637,86 @@ function htmlDecode(str: string) {
   return txt.value
 }
 
+interface AnimationFrameLayout {
+  yPadding: number
+  xPadding: number
+}
+
+interface AnimationFrameShadow {
+  shadowEnabled: boolean
+  shadowOffsetY: number
+  shadowBlur: number
+  shadowColor: string
+  shadowOpacity: number
+}
+
+interface AnimationFrameStyling {
+  fontSize: string
+  fontFamily: string
+  snippetBackgroundColor: string
+  backgroundColor: string
+}
+
+interface AnimationFrameConfig {
+  layout: AnimationFrameLayout
+  shadow: AnimationFrameShadow
+  styling: AnimationFrameStyling
+}
+
+const snippetPadding = 16
+
 async function createAnimationFrame(
   elements: MagicMoveElement[],
   frame: number,
   width: number = 100,
   height: number = 100,
-  backgroundColor: string,
-  fontSize: string,
-  fontFamily: string,
+  config: AnimationFrameConfig,
 ) {
+  const { yPadding, xPadding } = config.layout
+  const { shadowEnabled, shadowOffsetY, shadowBlur, shadowColor, shadowOpacity } = config.shadow
+  const { fontSize, fontFamily, backgroundColor, snippetBackgroundColor } = config.styling
+
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d', { alpha: false })
-  canvas.width = width
-  canvas.height = height
+  canvas.width = width + xPadding * 2
+  canvas.height = height + yPadding * 2
   ctx!.fillStyle = backgroundColor
   ctx?.fillRect(0, 0, canvas.width, canvas.height)
 
+  ctx!.fillStyle = snippetBackgroundColor
+  if (shadowEnabled) {
+    ctx!.shadowColor = `${shadowColor}${(shadowOpacity * 255).toString(16)}`
+    ctx!.shadowBlur = shadowBlur
+    ctx!.shadowOffsetX = 0
+    ctx!.shadowOffsetY = shadowOffsetY
+  }
+
+  ctx!.beginPath()
+  ctx!.roundRect(xPadding, yPadding, width, height, 4)
+  ctx!.fill()
+
+  ctx!.shadowColor = 'transparent'
+
+  const xModifier = xPadding
+  const yModifier = yPadding + snippetPadding
+
   const elementPromises = elements.map(async el => {
-    const x = interpolate(frame, [0, animationFrames], [el.x.start, el.x.end], {
-      easing: Easing.inOut(Easing.quad),
-    })
-    const y = interpolate(frame, [0, animationFrames], [el.y.start, el.y.end], {
-      easing: Easing.inOut(Easing.quad),
-    })
+    const x = interpolate(
+      frame,
+      [0, animationFrames],
+      [el.x.start + xModifier, el.x.end + xModifier],
+      {
+        easing: Easing.inOut(Easing.quad),
+      },
+    )
+    const y = interpolate(
+      frame,
+      [0, animationFrames],
+      [el.y.start + yModifier, el.y.end + yModifier],
+      {
+        easing: Easing.inOut(Easing.quad),
+      },
+    )
     const opacity = interpolate(frame, [0, animationFrames], [el.opacity.start, el.opacity.end], {
       easing: Easing.inOut(Easing.quad),
     })
