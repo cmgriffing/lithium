@@ -1,4 +1,4 @@
-import { createResource, createSignal, onCleanup, Show } from 'solid-js'
+import { createMemo, createResource, createSignal, onCleanup, Show } from 'solid-js'
 import { createHighlighter, getHighlighter, bundledThemes, bundledLanguages } from 'shiki'
 import { ShikiMagicMove } from 'shiki-magic-move/solid'
 import { makePersisted } from '@solid-primitives/storage'
@@ -42,6 +42,15 @@ import clsx from 'clsx'
 import { TbSettings } from 'solid-icons/tb'
 import { Checkbox } from '~/components/ui/checkbox'
 import { Label } from '~/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '~/components/ui/dialog'
 
 const animationSeconds = 1
 const animationFPS = 10
@@ -94,7 +103,7 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('snippets')
   const [toggled, setToggled] = createSignal(false)
   const [theme, setTheme] = makePersisted(createSignal('nord'), { name: 'theme' })
-  const [language, setLanguage] = makePersisted(createSignal('typescript'), {
+  const [language, setLanguage] = makePersisted(createSignal('vue'), {
     name: 'language',
   })
   const [startCode, setStartCode] = makePersisted(createSignal(left), {
@@ -103,15 +112,6 @@ export default function Home() {
   const [endCode, setEndCode] = makePersisted(createSignal(right), {
     name: 'endCode',
   })
-  const [magicMoveElements, setMagicMoveElements] = createSignal<MagicMoveElement[]>([])
-  const [maxContainerDimensions, setMaxContainerDimensions] = createSignal<{
-    width: number
-    height: number
-  }>()
-  const [code, setCode] = createSignal(startCode())
-  const [isResizing, setIsResizing] = createSignal(false)
-  const [isLooping, setIsLooping] = createSignal(true)
-
   const [bgColor, setBgColor] = makePersisted(createSignal('#ffffff'), {
     name: 'bgColor',
   })
@@ -139,6 +139,19 @@ export default function Home() {
   const [snippetWidth, setSnippetWidth] = makePersisted(createSignal(450), {
     name: 'snippetWidth',
   })
+
+  const [magicMoveElements, setMagicMoveElements] = createSignal<MagicMoveElement[]>([])
+  const [maxContainerDimensions, setMaxContainerDimensions] = createSignal<{
+    width: number
+    height: number
+  }>()
+  const [code, setCode] = createSignal(startCode())
+  const [isResizing, setIsResizing] = createSignal(false)
+  const [isLooping, setIsLooping] = createSignal(true)
+  const [isGenerating, setIsGenerating] = createSignal(false)
+  const [isGenerated, setIsGenerated] = createSignal(false)
+  const [gifDataUrl, setGifDataUrl] = createSignal('')
+  const [isShowingGifDialog, setIsShowingGifDialog] = createSignal(false)
 
   const [highlighter] = createResource(async () => {
     const newHighlighter = await createHighlighter({
@@ -181,6 +194,92 @@ export default function Home() {
   document.body.addEventListener('mouseup', e => {
     if (isResizing()) {
       setIsResizing(false)
+    }
+  })
+
+  const generateGifDataUrl = createMemo(() => {
+    return async function () {
+      const container = document.querySelector('.shiki-magic-move-container') as HTMLPreElement
+
+      const canvasFrames: HTMLCanvasElement[] = []
+      const backgroundColor = container.style.backgroundColor
+
+      let fontSize = ''
+      let fontFamily = ''
+
+      magicMoveElements().some(el => {
+        const computedStyle = window.getComputedStyle(el.el)
+        fontSize = computedStyle.getPropertyValue('font-size')
+        fontFamily = computedStyle.getPropertyValue('font-family')
+
+        return fontSize && fontFamily
+      })
+
+      const loopedFrames = []
+      const middleFrames = []
+
+      for (let i = 0; i < animationFrames; i++) {
+        middleFrames.push(i)
+      }
+
+      const pauseFrameLength = 15
+      const firstFrames = new Array(pauseFrameLength).fill(0)
+      const lastFrames = new Array(pauseFrameLength).fill(animationFrames)
+
+      loopedFrames.push(
+        ...firstFrames,
+        ...middleFrames,
+        ...lastFrames,
+        ...middleFrames.toReversed(),
+      )
+
+      for (let frame = 0; frame < loopedFrames.length; frame++) {
+        const actualFrame = loopedFrames[frame]
+
+        const canvas = await createAnimationFrame(
+          magicMoveElements(),
+          actualFrame,
+          maxContainerDimensions()?.width || 100,
+          maxContainerDimensions()?.height || 100,
+          {
+            layout: {
+              yPadding: yPadding(),
+              xPadding: xPadding(),
+            },
+            shadow: {
+              shadowEnabled: shadowEnabled(),
+              shadowOffsetY: shadowOffsetY(),
+              shadowBlur: shadowBlur(),
+              shadowColor: shadowColor(),
+              shadowOpacity: shadowOpacity(),
+            },
+            styling: {
+              fontSize,
+              fontFamily,
+              snippetBackgroundColor: backgroundColor,
+              backgroundColor: bgColor(),
+            },
+          },
+        )
+
+        canvasFrames.push(canvas)
+      }
+
+      const gif = await encode({
+        // TODO: Figure out how to make worker work
+        // workerUrl,
+        width: canvasFrames[0].width,
+        height: canvasFrames[0].height,
+        frames: canvasFrames.map((canvas, i) => {
+          return { data: canvas }
+        }),
+      })
+
+      const blob = new Blob([gif], { type: 'image/gif' })
+      // window.open(URL.createObjectURL(blob))
+
+      const dataUrl = await blobToDataURL(blob)
+      return dataUrl?.toString() || ''
     }
   })
 
@@ -442,101 +541,17 @@ export default function Home() {
             <div class="flex flex-row gap-2" id="toolbar-right">
               <Button
                 onClick={async () => {
-                  // TEMP
-
-                  const container = document.querySelector(
-                    '.shiki-magic-move-container',
-                  ) as HTMLPreElement
-
-                  const canvasFrames: HTMLCanvasElement[] = []
-                  const backgroundColor = container.style.backgroundColor
-
-                  console.log('magic move elements', magicMoveElements())
-
-                  let fontSize = ''
-                  let fontFamily = ''
-
-                  magicMoveElements().some(el => {
-                    const computedStyle = window.getComputedStyle(el.el)
-                    fontSize = computedStyle.getPropertyValue('font-size')
-                    fontFamily = computedStyle.getPropertyValue('font-family')
-
-                    return fontSize && fontFamily
-                  })
-
-                  const loopedFrames = []
-                  const middleFrames = []
-
-                  for (let i = 0; i < animationFrames; i++) {
-                    middleFrames.push(i)
-                  }
-
-                  const pauseFrameLength = 15
-                  const firstFrames = new Array(pauseFrameLength).fill(0)
-                  const lastFrames = new Array(pauseFrameLength).fill(animationFrames)
-
-                  loopedFrames.push(
-                    ...firstFrames,
-                    ...middleFrames,
-                    ...lastFrames,
-                    ...middleFrames.toReversed(),
-                  )
-
-                  for (let frame = 0; frame < loopedFrames.length; frame++) {
-                    const actualFrame = loopedFrames[frame]
-
-                    const canvas = await createAnimationFrame(
-                      magicMoveElements(),
-                      actualFrame,
-                      maxContainerDimensions()?.width || 100,
-                      maxContainerDimensions()?.height || 100,
-                      {
-                        layout: {
-                          yPadding: yPadding(),
-                          xPadding: xPadding(),
-                        },
-                        shadow: {
-                          shadowEnabled: shadowEnabled(),
-                          shadowOffsetY: shadowOffsetY(),
-                          shadowBlur: shadowBlur(),
-                          shadowColor: shadowColor(),
-                          shadowOpacity: shadowOpacity(),
-                        },
-                        styling: {
-                          fontSize,
-                          fontFamily,
-                          snippetBackgroundColor: backgroundColor,
-                          backgroundColor: bgColor(),
-                        },
-                      },
-                    )
-
-                    canvasFrames.push(canvas)
-                  }
-
-                  const gif = await encode({
-                    // workerUrl,
-                    width: canvasFrames[0].width,
-                    height: canvasFrames[0].height,
-                    frames: canvasFrames.map((canvas, i) => {
-                      return { data: canvas }
-                    }),
-                  })
-
-                  const blob = new Blob([gif], { type: 'image/gif' })
-                  // window.open(URL.createObjectURL(blob))
-
-                  const dataUrl = await blobToDataURL(blob)
-                  console.log(dataUrl)
-                  const finalGif = document.createElement('img')
-                  finalGif.src = dataUrl?.toString() || ''
-
-                  document.body.appendChild(finalGif)
+                  setIsGenerating(true)
+                  setTimeout(async () => {
+                    const dataUrl = await generateGifDataUrl()()
+                    setGifDataUrl(dataUrl)
+                    setIsGenerating(false)
+                    setIsShowingGifDialog(true)
+                  }, 0)
                 }}
               >
-                Copy
+                {isGenerating() ? 'Generating...' : 'Generate'}
               </Button>
-              <Button onClick={() => {}}>Download</Button>
             </div>
           </div>
 
@@ -547,7 +562,7 @@ export default function Home() {
               'min-height': `${(maxContainerDimensions()?.height || 100) + 40}px`,
             }}
           >
-            <p>Preview</p>
+            <p class="text-center">Preview</p>
             <div class="flex flex-row items-center justify-center">
               <div
                 class="flex flex-row items-center justify-center overflow-hidden"
@@ -616,8 +631,63 @@ export default function Home() {
           </div>
         </TabsContent>
       </Tabs>
+      <Dialog open={isShowingGifDialog()} onOpenChange={setIsShowingGifDialog} modal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              <div class="flex flex-row items-center justify-between gap-2">
+                <h3>Result</h3>
+              </div>
+            </DialogTitle>
+            <DialogDescription>
+              Copying the image via right click will only copy the current frame. Please download
+              the GIF below by using the Download button or right clicking and using "Save Image
+              as...".
+            </DialogDescription>
+          </DialogHeader>
+          <img src={gifDataUrl()} alt="Generated gif" />
+          <DialogFooter>
+            <Button
+              onClick={async () => {
+                const blob = dataURItoBlob(gifDataUrl())
+                const filename = 'lithium.gif'
+                const link = document.createElement('a')
+                link.href = URL.createObjectURL(blob)
+                link.download = filename
+                link.click()
+              }}
+            >
+              Download
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   )
+}
+
+function dataURItoBlob(dataURI: string) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(',')[1])
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length)
+
+  // create a view into the buffer
+  var ia = new Uint8Array(ab)
+
+  // set the bytes of the buffer to the correct values
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i)
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  var blob = new Blob([ab], { type: mimeString })
+  return blob
 }
 
 function blobToDataURL(blob: Blob): Promise<string | ArrayBuffer | null | undefined> {
