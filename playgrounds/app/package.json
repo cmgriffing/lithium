@@ -1,5 +1,5 @@
 {
-  "name": "example-with-tailwindcss",
+  "name": "lithium-app",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
