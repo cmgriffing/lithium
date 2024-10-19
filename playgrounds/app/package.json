@@ -8,8 +8,11 @@
   },
   "dependencies": {
     "@corvu/resizable": "^0.2.3",
+    "@fontsource/bungee-inline": "^5.1.0",
+    "@fontsource/roboto": "^5.1.0",
     "@kobalte/core": "^0.13.7",
     "@solid-primitives/storage": "^4.2.1",
+    "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.14.7",
     "@solidjs/start": "^1.0.8",
     "@thednp/solid-color-picker": "^0.0.12",

@@ -1,29 +1,28 @@
-import { createSignal, createEffect } from "solid-js";
-import { makePersisted } from "@solid-primitives/storage";
+import { createSignal, createEffect } from 'solid-js'
+import { makePersisted } from '@solid-primitives/storage'
 
 export function createThemeSwitcher() {
   const [isDarkMode, setIsDarkMode] = makePersisted(createSignal(false), {
-    name: "isDarkMode",
-    storage: localStorage,
-  });
+    name: 'isDarkMode',
+  })
 
   createEffect(() => {
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
     if (isDarkMode()) {
-      document.body.classList.add("dark");
+      document.body.classList.add('dark')
     } else {
-      document.body.classList.remove("dark");
+      document.body.classList.remove('dark')
     }
 
     if (isDarkMode() === null) {
-      setIsDarkMode(prefersDarkScheme.matches);
+      setIsDarkMode(prefersDarkScheme.matches)
     }
-  });
+  })
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode());
-  };
+    setIsDarkMode(!isDarkMode())
+  }
 
-  return [isDarkMode, toggleDarkMode] as const;
+  return [isDarkMode, toggleDarkMode] as const
 }

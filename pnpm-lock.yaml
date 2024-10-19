@@ -177,12 +177,21 @@ importers:
       '@corvu/resizable':
         specifier: ^0.2.3
         version: 0.2.3(solid-js@1.9.2)
+      '@fontsource/bungee-inline':
+        specifier: ^5.1.0
+        version: 5.1.0
+      '@fontsource/roboto':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@kobalte/core':
         specifier: ^0.13.7
         version: 0.13.7(solid-js@1.9.2)
       '@solid-primitives/storage':
         specifier: ^4.2.1
         version: 4.2.1(solid-js@1.9.2)
+      '@solidjs/meta':
+        specifier: ^0.29.4
+        version: 0.29.4(solid-js@1.9.2)
       '@solidjs/router':
         specifier: ^0.14.7
         version: 0.14.8(solid-js@1.9.2)
@@ -1635,6 +1644,12 @@ packages:
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
 
+  '@fontsource/bungee-inline@5.1.0':
+    resolution: {integrity: sha512-krWX95KYOgOHtN8c9chwvcNygon8fW/+JzBwetGCWKm0E7a2FTb844yJeuZvTc58cEV7KKwbH20E52aot6OZtQ==}
+
+  '@fontsource/roboto@5.1.0':
+    resolution: {integrity: sha512-cFRRC1s6RqPygeZ8Uw/acwVHqih8Czjt6Q0MwoUoDe9U3m4dH1HmNDRBZyqlMSFwgNAUKgFImncKdmDHyKpwdg==}
+
   '@humanfs/core@0.19.0':
     resolution: {integrity: sha512-2cbWIHbZVEweE853g8jymffCA+NCMiuqeECeBBLm8dg2oFdjuGJhgN4UAbI+6v0CKbbhvtXA4qV8YR5Ji86nmw==}
     engines: {node: '>=18.18.0'}
@@ -2099,6 +2114,11 @@ packages:
     resolution: {integrity: sha512-CqAwKb2T5Vi72+rhebSsqNZ9o67buYRdEJrIFzRXz3U59QqezuuxPsyzTSVCacwS5Pf109VRsgCJQoxKRoECZQ==}
     peerDependencies:
       solid-js: ^1.6.12
+
+  '@solidjs/meta@0.29.4':
+    resolution: {integrity: sha512-zdIWBGpR9zGx1p1bzIPqF5Gs+Ks/BH8R6fWhmUa/dcK1L2rUC8BAcZJzNRYBQv74kScf1TSOs0EY//Vd/I0V8g==}
+    peerDependencies:
+      solid-js: '>=1.8.4'
 
   '@solidjs/router@0.14.8':
     resolution: {integrity: sha512-S+rD5Twp0820cM03wEIYtb7/4KN7Cfr3BP+qPIqb7IXO/SZ72tWqHEMQsmcjDbr4yVfpA+5Sq0Y+xcq09y1gQA==}
@@ -7694,6 +7714,10 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
+  '@fontsource/bungee-inline@5.1.0': {}
+
+  '@fontsource/roboto@5.1.0': {}
+
   '@humanfs/core@0.19.0': {}
 
   '@humanfs/node@0.16.5':
@@ -8185,6 +8209,10 @@ snapshots:
       solid-js: 1.9.2
 
   '@solid-primitives/utils@6.2.3(solid-js@1.9.2)':
+    dependencies:
+      solid-js: 1.9.2
+
+  '@solidjs/meta@0.29.4(solid-js@1.9.2)':
     dependencies:
       solid-js: 1.9.2
 
