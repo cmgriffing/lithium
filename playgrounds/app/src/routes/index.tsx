@@ -56,48 +56,28 @@ const animationSeconds = 1
 const animationFPS = 10
 const animationFrames = animationSeconds * animationFPS
 
-const left = `<script setup>
-import { ref, computed } from 'vue'
+const left = `
+import { render } from "solid-js/web";
 
-const count = ref(1)
-const double = computed(() => count.value * 2)
-</script>
-
-<template>
-  <p class="greeting">{{ count }} = {{ doubled / 2 }}</p>
-</template>
-
-<style>
-.greeting {
-  color: red;
-  font-weight: bold;
+function Counter() {
+  return <div>Count: 0</div>;
 }
-</style>`
-const right = `<script>
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  data: () => ({
-    count: 1
-  }),
-  computed: {
-    double() {
-      return this.count * 2
-    }
-  },
-})
-</script>
+render(() => <Counter />, document.getElementById('app'));
+`
 
-<template>
-  <p class="greeting">{{ count }} * 2 = {{ doubled }}</p>
-</template>
+const right = `
+import { render } from "solid-js/web";
+import { createSignal } from "solid-js";
 
-<style>
-.greeting {
-  color: red;
-  font-weight: bold;
+function Counter() {
+	const [count, setCount] = createSignal(0);
+	setInterval(() => setCount(count() + 1), 1000);
+  return <div>Count: {count()}</div>;
 }
-</style>`
+
+render(() => <Counter />, document.getElementById('app'));
+`
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('snippets')
