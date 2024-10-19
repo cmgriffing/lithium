@@ -31,7 +31,6 @@ export function ShikiMagicMoveRenderer(props: ShikiMagicMoveRendererProps) {
       // Remove previous content
       container.innerHTML = ''
       setIsMounted(true)
-      console.log('setIsMounted')
       renderer = new Renderer(container)
     }
   })
@@ -42,18 +41,13 @@ export function ShikiMagicMoveRenderer(props: ShikiMagicMoveRendererProps) {
 
       Object.assign(renderer.options, props.options)
 
-      console.log('props.animate', props.animate)
-
       if (props.animate === undefined || props.animate === true) {
         if (props.previous) renderer.replace(props.previous)
-
-        console.log('animating')
 
         props.onStart?.()
         await renderer.render(props.tokens)
         props.onEnd?.()
       } else {
-        console.log('replacing instead of animating')
         renderer.replace(props.tokens)
       }
     }
