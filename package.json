@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "postinstall": "pnpm build",
-    "dev": "cd playgrounds/app && pnpm dev",
+    "dev": "pnpm run --filter ./playgrounds/app dev",
     "build": "turbo run build --filter=./packages/*",
     "test": "turbo run test --filter=./packages/*",
     "typecheck": "turbo run typecheck --filter=./packages/*",
