@@ -260,7 +260,10 @@ export default function Home() {
   })
 
   return (
-    <main class="mx-auto text-gray-700 p-4">
+    <main class="mx-auto text-gray-700 dark:text-gray-100 p-4">
+      <p class="mb-16 text-center font-bold text-lg">
+        Create and share beautiful gifs of your source code diffs.
+      </p>
       <Tabs defaultValue="snippets" class="w-full" value={selectedTab()} onChange={setSelectedTab}>
         <TabsList class="grid w-full grid-cols-2">
           <TabsTrigger value="snippets">Step 1: Snippets</TabsTrigger>
@@ -779,5 +782,5 @@ async function createAnimationFrame(
   })
   await Promise.all(elementPromises)
 
-  return ctx.getImageData(0, 0, canvas.width, canvas.height)
+  return ctx!.getImageData(0, 0, canvas.width, canvas.height)
 }
