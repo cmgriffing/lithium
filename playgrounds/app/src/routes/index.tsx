@@ -71,8 +71,8 @@ import { render } from "solid-js/web";
 import { createSignal } from "solid-js";
 
 function Counter() {
-	const [count, setCount] = createSignal(0);
-	setInterval(() => setCount(count() + 1), 1000);
+  const [count, setCount] = createSignal(0);
+  setInterval(() => setCount(count() + 1), 1000);
   return <div>Count: {count()}</div>;
 }
 
@@ -181,7 +181,7 @@ export default function Home() {
     return async function () {
       const container = document.querySelector('.shiki-magic-move-container') as HTMLPreElement
 
-      const canvasFrames: HTMLCanvasElement[] = []
+      const canvasFrames: ImageData[] = []
       const backgroundColor = container.style.backgroundColor
 
       let fontSize = ''
@@ -245,20 +245,16 @@ export default function Home() {
         canvasFrames.push(canvas)
       }
 
-      const gif = await encode({
-        // TODO: Figure out how to make worker work
-        // workerUrl,
+      const blob = await encode({
+        workerUrl,
+        format: 'blob',
         width: canvasFrames[0].width,
         height: canvasFrames[0].height,
-        frames: canvasFrames.map((canvas, i) => {
-          return { data: canvas }
-        }),
+        frames: canvasFrames,
       })
 
-      const blob = new Blob([gif], { type: 'image/gif' })
-      // window.open(URL.createObjectURL(blob))
-
       const dataUrl = await blobToDataURL(blob)
+
       return dataUrl?.toString() || ''
     }
   })
@@ -783,5 +779,5 @@ async function createAnimationFrame(
   })
   await Promise.all(elementPromises)
 
-  return canvas
+  return ctx.getImageData(0, 0, canvas.width, canvas.height)
 }
