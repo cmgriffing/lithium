@@ -83,7 +83,7 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('snippets')
   const [toggled, setToggled] = createSignal(false)
   const [theme, setTheme] = makePersisted(createSignal('nord'), { name: 'theme' })
-  const [language, setLanguage] = makePersisted(createSignal('vue'), {
+  const [language, setLanguage] = makePersisted(createSignal('tsx'), {
     name: 'language',
   })
   const [startCode, setStartCode] = makePersisted(createSignal(left), {
