@@ -1,28 +1,28 @@
 import { createSignal, createEffect } from "solid-js";
+import { makePersisted } from "@solid-primitives/storage";
 
 export function createThemeSwitcher() {
-  const [isDarkMode, setIsDarkMode] = createSignal(false);
+  const [isDarkMode, setIsDarkMode] = makePersisted(createSignal(false), {
+    name: "isDarkMode",
+    storage: localStorage,
+  });
 
   createEffect(() => {
     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    const currentTheme = localStorage.getItem("theme");
+    
+    if (isDarkMode()) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
 
-    if (currentTheme === "dark") {
-      document.body.classList.toggle("dark", true);
-      setIsDarkMode(true);
-    } else if (currentTheme === "light") {
-      document.body.classList.toggle("dark", false);
-      setIsDarkMode(false);
-    } else if (prefersDarkScheme.matches) {
-      document.body.classList.toggle("dark", true);
-      setIsDarkMode(true);
+    if (isDarkMode() === null) {
+      setIsDarkMode(prefersDarkScheme.matches);
     }
   });
 
-  const toggleDarkMode = (value: boolean) => {
-    setIsDarkMode(value);
-    document.body.classList.toggle("dark", value);
-    localStorage.setItem("theme", value ? "dark" : "light");
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode());
   };
 
   return [isDarkMode, toggleDarkMode] as const;
