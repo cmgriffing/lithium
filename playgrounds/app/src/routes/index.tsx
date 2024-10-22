@@ -1,5 +1,5 @@
 import { createMemo, createResource, createSignal, onCleanup, Show } from 'solid-js'
-import { createHighlighter, getHighlighter, bundledThemes, bundledLanguages } from 'shiki'
+import { createHighlighter, bundledThemes, bundledLanguages } from 'shiki'
 import { ShikiMagicMove } from 'shiki-magic-move/solid'
 import { makePersisted } from '@solid-primitives/storage'
 import { interpolate, interpolateColors, Easing } from 'remotion'
@@ -49,7 +49,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog'
 
 const animationSeconds = 1
