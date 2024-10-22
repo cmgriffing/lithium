@@ -4,13 +4,17 @@
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@corvu/resizable": "^0.2.3",
     "@fontsource/bungee-inline": "^5.1.0",
     "@fontsource/roboto": "^5.1.0",
     "@kobalte/core": "^0.13.7",
+    "@libsql/client": "^0.14.0",
     "@solid-primitives/storage": "^4.2.1",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.14.7",
@@ -20,7 +24,11 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "diff-match-patch-es": "^0.1.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.35.3",
+    "jsonwebtoken": "^9.0.2",
     "modern-gif": "^2.0.3",
+    "nanoid": "^5.0.7",
     "ohash": "^1.1.4",
     "postcss": "^8.4.38",
     "remotion": "^4.0.221",
@@ -32,9 +40,15 @@
     "tailwind-merge": "^2.5.3",
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
-    "vinxi": "^0.4.3"
+    "vinxi": "^0.4.3",
+    "zod": "^3.23.8"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "drizzle-kit": "^0.26.2",
+    "tsx": "^4.19.1"
   }
 }
