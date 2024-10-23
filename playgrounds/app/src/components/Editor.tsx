@@ -280,13 +280,13 @@ export default function Editor(props: EditorProps) {
             </div>
           </div>
 
-          <div class="dark:bg-[#27272a] dark:bg-background bg-gray-100 p-2 rounded-b flex flex-row flex-wrap md:flex-nowrap gap-2">
+          <div class="dark:bg-[#27272a] bg-gray-100 p-2 rounded-b flex flex-row flex-wrap md:flex-nowrap gap-2">
             <TextField class="w-full md:w-1/2" value={startCode} onChange={setStartCode}>
               <TextFieldLabel>Start Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
 
-            <TextField class="md:w-1/2" value={endCode} onChange={setEndCode}>
+            <TextField class="w-full md:w-1/2" value={endCode} onChange={setEndCode}>
               <TextFieldLabel>End Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
