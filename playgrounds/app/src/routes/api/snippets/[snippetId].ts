@@ -31,10 +31,7 @@ export async function GET(event: APIEvent) {
   }
 
   return new Response(
-    JSON.stringify({
-      ...snippet,
-      shadowEnabled: snippet.shadowEnabled === 1,
-    }),
+    JSON.stringify(snippet),
     {
       status: 200,
       headers: {
@@ -115,7 +112,7 @@ export async function PUT(event: APIEvent) {
       snippetWidth,
       yPadding,
       xPadding,
-      shadowEnabled: shadowEnabled ? 1 : 0,
+      shadowEnabled,
       shadowOffsetY,
       shadowBlur,
       shadowColor,

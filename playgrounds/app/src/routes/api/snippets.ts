@@ -73,7 +73,7 @@ export async function POST(event: APIEvent) {
     snippetWidth,
     yPadding,
     xPadding,
-    shadowEnabled: shadowEnabled ? 1 : 0,
+    shadowEnabled,
     shadowOffsetY,
     shadowBlur,
     shadowColor,

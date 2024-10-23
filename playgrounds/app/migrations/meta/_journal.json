@@ -15,6 +15,13 @@
       "when": 1729646676735,
       "tag": "0001_burly_alice",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1729650906143,
+      "tag": "0002_dizzy_timeslip",
+      "breakpoints": true
     }
   ]
 }

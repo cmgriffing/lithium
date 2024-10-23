@@ -23,8 +23,7 @@ export const snippetsTable = sqliteTable('snippets_table', {
   snippetWidth: int().notNull().default(450),
   yPadding: int().notNull().default(42),
   xPadding: int().notNull().default(42),
-  // sqlite doesn't support booleans
-  shadowEnabled: int().notNull().default(1),
+  shadowEnabled: int({ mode: 'boolean' }).notNull().default(true),
   shadowOffsetY: int().notNull().default(10),
   shadowBlur: int().notNull().default(10),
   shadowColor: text().notNull().default('#000000'),
