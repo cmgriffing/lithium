@@ -14,4 +14,41 @@ export interface Snippet {
   codeRight: string
   createdAt: number
   updatedAt: number
+  snippetWidth: number
+  yPadding: number
+  xPadding: number
+  shadowEnabled: boolean
+  shadowOffsetY: number
+  shadowBlur: number
+  shadowColor: string
+  shadowOpacity: number
+  bgColor: string
+  language: string
+  theme: string
+}
+
+export interface AnimationFrameLayout {
+  yPadding: number
+  xPadding: number
+}
+
+export interface AnimationFrameShadow {
+  shadowEnabled: boolean
+  shadowOffsetY: number
+  shadowBlur: number
+  shadowColor: string
+  shadowOpacity: number
+}
+
+export interface AnimationFrameStyling {
+  fontSize: string
+  fontFamily: string
+  snippetBackgroundColor: string
+  backgroundColor: string
+}
+
+export interface AnimationFrameConfig {
+  layout: AnimationFrameLayout
+  shadow: AnimationFrameShadow
+  styling: AnimationFrameStyling
 }

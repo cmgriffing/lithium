@@ -1,4 +1,5 @@
-import { createResource } from 'solid-js'
+import { createResource, Show } from 'solid-js'
+import Editor from '~/components/Editor'
 import { authFetch } from '~/lib/utils'
 import { Snippet } from '~/types'
 
@@ -14,7 +15,36 @@ export default function ViewSnippet({ params }: { params: { snippetId: string } 
 
   return (
     <main class="text-center mx-auto text-gray-700  dark:text-gray-100 p-4 max-w-[480px] flex flex-col justify-center gap-16">
-      Snippet ID: {snippet()?.id}
+      <Show when={snippet()}>
+        <Editor
+          startCode={snippet()!.codeLeft}
+          setStartCode={() => {}}
+          endCode={snippet()!.codeRight}
+          setEndCode={() => {}}
+          snippetWidth={snippet()!.snippetWidth}
+          setSnippetWidth={() => {}}
+          yPadding={snippet()!.yPadding}
+          setYPadding={() => {}}
+          xPadding={snippet()!.xPadding}
+          setXPadding={() => {}}
+          shadowEnabled={snippet()!.shadowEnabled}
+          setShadowEnabled={() => {}}
+          shadowOffsetY={snippet()!.shadowOffsetY}
+          setShadowOffsetY={() => {}}
+          shadowBlur={snippet()!.shadowBlur}
+          setShadowBlur={() => {}}
+          shadowColor={snippet()!.shadowColor}
+          setShadowColor={() => {}}
+          shadowOpacity={snippet()!.shadowOpacity}
+          setShadowOpacity={() => {}}
+          bgColor={snippet()!.bgColor}
+          setBgColor={() => {}}
+          language={snippet()!.language}
+          setLanguage={() => {}}
+          theme={snippet()!.theme}
+          setTheme={() => {}}
+        />
+      </Show>
     </main>
   )
 }
