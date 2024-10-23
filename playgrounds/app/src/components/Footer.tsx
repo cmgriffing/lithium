@@ -12,7 +12,7 @@ export default function Footer() {
         </li>
         <li class="">
           <a
-            href="https://github.com/cmgriffing/lithium"
+            href="https://github.com/cmgriffing/giffium"
             target="_blank"
             rel="noreferrer"
             class={linkStyles}

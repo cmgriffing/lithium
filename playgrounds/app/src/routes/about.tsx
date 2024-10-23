@@ -5,7 +5,7 @@ import { getGithubContributors } from '~/lib/utils'
 
 export default function About() {
   const [contributors] = createResource(async () => {
-    const contributors = await getGithubContributors('cmgriffing', 'lithium')
+    const contributors = await getGithubContributors('cmgriffing', 'giffium')
     return [
       ...contributors,
       { username: 'crutchcorn', avatarUrl: 'https://avatars.githubusercontent.com/u/9100169?v=4' },

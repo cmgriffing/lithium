@@ -1,5 +1,5 @@
 {
-  "name": "lithium-app",
+  "name": "giffium-app",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",

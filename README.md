@@ -1,17 +1,17 @@
 <p>
-  <img width="100%" src="https://assets.solidjs.com/banner?type=Lithium&background=tiles&project=Monorepo" alt="Lithium">
+  <img width="100%" src="https://assets.solidjs.com/banner?type=Giffium&background=tiles&project=Monorepo" alt="Giffium">
 </p>
 
-# Lithium
+# Giffium
 
 [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg?style=for-the-badge&logo=pnpm)](https://pnpm.io/)
 [![turborepo](https://img.shields.io/badge/built%20with-turborepo-cc00ff.svg?style=for-the-badge&logo=turborepo)](https://turborepo.org/)
 
-Lithium is a tool to generate a socially shareable gif from a diff of two snippets of code/config.
+Giffium is a tool to generate a socially shareable gif from a diff of two snippets of code/config.
 
 ## Inspiration
 
-Lithium was inspired by [Shiki Magic Move](https://github.com/rhysd/Shiki-Magic-Move) and [Carbon](https://carbon.now.sh/)/[Ray.so](https://ray.so/).
+Giffium was inspired by [Shiki Magic Move](https://github.com/rhysd/Shiki-Magic-Move) and [Carbon](https://carbon.now.sh/)/[Ray.so](https://ray.so/).
 
 It was created as part of the [SolidJS Hackathon](https://hack.solidjs.com/)
 
@@ -55,7 +55,7 @@ pnpm run update-deps
 
 ## Contributing
 
-Lithium is a monorepo managed by [turborepo](https://turborepo.org). The project also requires the use of [pnpm](https://pnpm.io) to manage dependencies.
+Giffium is a monorepo managed by [turborepo](https://turborepo.org). The project also requires the use of [pnpm](https://pnpm.io) to manage dependencies.
 
 ### Getting Started
 

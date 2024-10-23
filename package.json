@@ -1,6 +1,6 @@
 {
-  "name": "lithium-monorepo",
-  "description": "A monorepo for Lithium, the social sharable diff tool",
+  "name": "giffium-monorepo",
+  "description": "A monorepo for Giffium, the social sharable diff tool",
   "version": "0.0.1",
   "license": "MIT",
   "author": "Chris Griffing",

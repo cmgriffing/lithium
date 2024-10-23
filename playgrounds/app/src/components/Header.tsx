@@ -78,7 +78,7 @@ export default function Nav() {
       </nav>
       <div class="flex flex-col items-center justify-center p-4">
         <a href="/">
-          <h1 class="text-6xl font-title text-sky-500">Lithium</h1>
+          <h1 class="text-6xl font-title text-sky-500">Giffium</h1>
         </a>
       </div>
     </header>

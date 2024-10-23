@@ -623,7 +623,7 @@ export default function Editor(props: EditorProps) {
             <Button
               onClick={async () => {
                 const blob = dataURItoBlob(gifDataUrl())
-                const filename = 'lithium.gif'
+                const filename = 'giffium.gif'
                 const link = document.createElement('a')
                 link.href = URL.createObjectURL(blob)
                 link.download = filename
