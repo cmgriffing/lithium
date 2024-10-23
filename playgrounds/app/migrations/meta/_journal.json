@@ -8,6 +8,13 @@
       "when": 1729551859421,
       "tag": "0000_last_patch",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1729646676735,
+      "tag": "0001_burly_alice",
+      "breakpoints": true
     }
   ]
 }

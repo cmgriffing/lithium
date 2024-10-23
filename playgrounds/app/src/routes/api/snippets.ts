@@ -34,7 +34,22 @@ export async function POST(event: APIEvent) {
     })
   }
 
-  const { title, codeLeft, codeRight } = await event.request.json()
+  const {
+    title,
+    codeLeft,
+    codeRight,
+    snippetWidth,
+    yPadding,
+    xPadding,
+    shadowEnabled,
+    shadowOffsetY,
+    shadowBlur,
+    shadowColor,
+    shadowOpacity,
+    bgColor,
+    language,
+    theme,
+  } = await event.request.json()
 
   const isValid = snippetValidator.safeParse({ title, codeLeft, codeRight })
 
@@ -55,6 +70,17 @@ export async function POST(event: APIEvent) {
     codeRight,
     createdAt: Date.now(),
     updatedAt: Date.now(),
+    snippetWidth,
+    yPadding,
+    xPadding,
+    shadowEnabled: shadowEnabled ? 1 : 0,
+    shadowOffsetY,
+    shadowBlur,
+    shadowColor,
+    shadowOpacity,
+    bgColor,
+    language,
+    theme,
   }
 
   await db.insert(snippetsTable).values(newSnippet)

@@ -30,12 +30,18 @@ export async function GET(event: APIEvent) {
     })
   }
 
-  return new Response(JSON.stringify(snippet), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
+  return new Response(
+    JSON.stringify({
+      ...snippet,
+      shadowEnabled: snippet.shadowEnabled === 1,
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  })
+  )
 }
 
 export async function PUT(event: APIEvent) {
@@ -70,7 +76,22 @@ export async function PUT(event: APIEvent) {
     })
   }
 
-  const { title, codeLeft, codeRight } = await event.request.json()
+  const {
+    title,
+    codeLeft,
+    codeRight,
+    snippetWidth,
+    yPadding,
+    xPadding,
+    shadowEnabled,
+    shadowOffsetY,
+    shadowBlur,
+    shadowColor,
+    shadowOpacity,
+    bgColor,
+    language,
+    theme,
+  } = await event.request.json()
 
   const isValid = snippetValidator.safeParse({ title, codeLeft, codeRight })
 
@@ -91,6 +112,17 @@ export async function PUT(event: APIEvent) {
       codeLeft,
       codeRight,
       updatedAt: Date.now(),
+      snippetWidth,
+      yPadding,
+      xPadding,
+      shadowEnabled: shadowEnabled ? 1 : 0,
+      shadowOffsetY,
+      shadowBlur,
+      shadowColor,
+      shadowOpacity,
+      bgColor,
+      language,
+      theme,
     })
     .where(eq(snippetsTable.id, snippetId))
 
