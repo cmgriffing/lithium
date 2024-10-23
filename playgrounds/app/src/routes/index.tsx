@@ -36,7 +36,7 @@ export default function Home() {
   const [endCode, setEndCode] = makePersisted(createSignal(right), {
     name: 'endCode',
   })
-  const [bgColor, setBgColor] = makePersisted(createSignal('#ffffff'), {
+  const [bgColor, setBgColor] = makePersisted(createSignal('#a3d0ff'), {
     name: 'bgColor',
   })
   const [xPadding, setXPadding] = makePersisted(createSignal(42), {
