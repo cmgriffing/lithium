@@ -15,10 +15,10 @@ export const snippetValidator = z.object({
   xPadding: z.number().min(0).max(200),
   shadowEnabled: z.boolean(),
   shadowOffsetY: z.number().min(0).max(200),
-  shadowBlur: z.number().min(1).max(1000),
+  shadowBlur: z.number().min(1).max(200),
   shadowColor: z.string().min(1).max(30),
   shadowOpacity: z.number().min(0).max(1),
   bgColor: z.string().min(1).max(30),
-  language: z.string().min(1).max(1000),
-  theme: z.string().min(1).max(1000),
+  language: z.string().min(1).max(64),
+  theme: z.string().min(1).max(64),
 })
