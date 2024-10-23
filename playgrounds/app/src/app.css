@@ -139,3 +139,12 @@
 ::-webkit-scrollbar-corner {
   display: none;
 }
+
+
+/* Full App Height and Letting Footer in the End */
+#app {
+  @apply min-h-screen flex flex-col ;
+}
+#app main { 
+  @apply w-full flex-1; 
+}
