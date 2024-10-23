@@ -264,9 +264,9 @@ export default function Editor(props: EditorProps) {
           <TabsTrigger value="output">Step 2: Output</TabsTrigger>
         </TabsList>
         <TabsContent value="snippets">
-          <div class="flex flex-row p-2 gap-2 bg-slate-500 rounded-t justify-between">
+          <div class="flex flex-row p-2 gap-2 dark:bg-[#27272a] bg-gray-100 rounded-t justify-between">
             <div class="flex flex-row gap-2 items-center">
-              <div class="rounded bg-white p-2">Enter the code snippets you would like to diff</div>
+              <div class="">Enter the code snippets you would like to diff</div>
             </div>
             <div class="flex flex-row gap-2">
               <Button
@@ -280,20 +280,23 @@ export default function Editor(props: EditorProps) {
             </div>
           </div>
 
-          <div class="bg-slate-400 p-2 rounded-b flex flex-row gap-2">
-            <TextField class="w-1/2" value={startCode} onChange={setStartCode}>
+          <div class="dark:bg-[#27272a] dark:bg-background bg-gray-100 p-2 rounded-b flex flex-row flex-wrap md:flex-nowrap gap-2">
+            <TextField class="w-full md:w-1/2" value={startCode} onChange={setStartCode}>
               <TextFieldLabel>Start Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
 
-            <TextField class="w-1/2" value={endCode} onChange={setEndCode}>
+            <TextField class="md:w-1/2" value={endCode} onChange={setEndCode}>
               <TextFieldLabel>End Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
           </div>
         </TabsContent>
         <TabsContent value="output">
-          <div class="flex flex-row p-2 gap-2 bg-slate-500 rounded-t justify-between" id="toolbar">
+          <div
+            class="flex flex-row p-2 gap-2 dark:bg-[#27272a] bg-gray-100 rounded-t justify-between"
+            id="toolbar"
+          >
             <div class="flex flex-row gap-2" id="toolbar-left">
               <Combobox
                 value={theme}
@@ -302,7 +305,9 @@ export default function Editor(props: EditorProps) {
                 placeholder="Search a theme..."
                 itemComponent={props => (
                   <ComboboxItem item={props.item}>
-                    <ComboboxItemLabel>{props.item.rawValue}</ComboboxItemLabel>
+                    <ComboboxItemLabel class="dark:text-black">
+                      {props.item.rawValue}
+                    </ComboboxItemLabel>
                     <ComboboxItemIndicator />
                   </ComboboxItem>
                 )}
@@ -530,7 +535,7 @@ export default function Editor(props: EditorProps) {
 
           <div
             id="preview-wrapper"
-            class="bg-slate-400 p-2 rounded-b"
+            class="dark:bg-[#27272a] bg-gray-100 p-2 rounded-b"
             style={{
               'min-height': `${(maxContainerDimensions()?.height || 100) + 40}px`,
             }}
