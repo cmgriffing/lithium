@@ -85,35 +85,6 @@ interface EditorProps {
 }
 
 export default function Editor(props: EditorProps) {
-  const {
-    startCode,
-    setStartCode,
-    endCode,
-    setEndCode,
-    snippetWidth,
-    setSnippetWidth,
-    yPadding,
-    setYPadding,
-    xPadding,
-    setXPadding,
-    shadowEnabled,
-    setShadowEnabled,
-    shadowOffsetY,
-    setShadowOffsetY,
-    shadowBlur,
-    setShadowBlur,
-    shadowColor,
-    setShadowColor,
-    shadowOpacity,
-    setShadowOpacity,
-    bgColor,
-    setBgColor,
-    language,
-    setLanguage,
-    theme,
-    setTheme,
-  } = props
-
   const [selectedTab, setSelectedTab] = createSignal<'snippets' | 'output'>('snippets')
   const [toggled, setToggled] = createSignal(false)
 
@@ -122,7 +93,7 @@ export default function Editor(props: EditorProps) {
     width: number
     height: number
   }>()
-  const [code, setCode] = createSignal(startCode)
+  const [code, setCode] = createSignal(props.startCode)
   const [isResizing, setIsResizing] = createSignal(false)
   const [isLooping, setIsLooping] = createSignal(true)
   const [isGenerating, setIsGenerating] = createSignal(false)
@@ -142,15 +113,15 @@ export default function Editor(props: EditorProps) {
   const intervalId = setInterval(() => {
     if (
       selectedTab() === 'output' &&
-      startCode !== '' &&
-      endCode !== '' &&
+      props.startCode !== '' &&
+      props.endCode !== '' &&
       !isResizing() &&
       isLooping()
     ) {
       if (toggled()) {
-        setCode(startCode)
+        setCode(props.startCode)
       } else {
-        setCode(endCode)
+        setCode(props.endCode)
       }
       setToggled(!toggled())
     }
@@ -163,8 +134,9 @@ export default function Editor(props: EditorProps) {
   document.body.addEventListener('mousemove', e => {
     if (isResizing()) {
       const deltaX = e.movementX
+      console.log('mousemove')
       // console.log(e.)
-      setSnippetWidth(snippetWidth + deltaX)
+      props.setSnippetWidth(props.snippetWidth + deltaX)
     }
   })
 
@@ -220,21 +192,21 @@ export default function Editor(props: EditorProps) {
           maxContainerDimensions()?.height || 100,
           {
             layout: {
-              yPadding: yPadding,
-              xPadding: xPadding,
+              yPadding: props.yPadding,
+              xPadding: props.xPadding,
             },
             shadow: {
-              shadowEnabled: shadowEnabled,
-              shadowOffsetY: shadowOffsetY,
-              shadowBlur: shadowBlur,
-              shadowColor: shadowColor,
-              shadowOpacity: shadowOpacity,
+              shadowEnabled: props.shadowEnabled,
+              shadowOffsetY: props.shadowOffsetY,
+              shadowBlur: props.shadowBlur,
+              shadowColor: props.shadowColor,
+              shadowOpacity: props.shadowOpacity,
             },
             styling: {
               fontSize,
               fontFamily,
               snippetBackgroundColor: backgroundColor,
-              backgroundColor: bgColor,
+              backgroundColor: props.bgColor,
             },
           },
         )
@@ -273,7 +245,7 @@ export default function Editor(props: EditorProps) {
                 onClick={() => {
                   setSelectedTab('output')
                 }}
-                disabled={startCode === '' || endCode === ''}
+                disabled={props.startCode === '' || props.endCode === ''}
               >
                 Next
               </Button>
@@ -281,12 +253,16 @@ export default function Editor(props: EditorProps) {
           </div>
 
           <div class="dark:bg-[#27272a] bg-gray-100 p-2 rounded-b flex flex-row flex-wrap md:flex-nowrap gap-2">
-            <TextField class="w-full md:w-1/2" value={startCode} onChange={setStartCode}>
+            <TextField
+              class="w-full md:w-1/2"
+              value={props.startCode}
+              onChange={props.setStartCode}
+            >
               <TextFieldLabel>Start Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
 
-            <TextField class="w-full md:w-1/2" value={endCode} onChange={setEndCode}>
+            <TextField class="w-full md:w-1/2" value={props.endCode} onChange={props.setEndCode}>
               <TextFieldLabel>End Code</TextFieldLabel>
               <TextFieldTextArea class="h-[400px]" placeholder="Type your message here." />
             </TextField>
@@ -299,9 +275,9 @@ export default function Editor(props: EditorProps) {
           >
             <div class="flex flex-row gap-2" id="toolbar-left">
               <Combobox
-                value={theme}
+                value={props.theme}
                 options={Object.keys(bundledThemes)}
-                onChange={setTheme}
+                onChange={props.setTheme}
                 placeholder="Search a theme..."
                 itemComponent={props => (
                   <ComboboxItem item={props.item}>
@@ -320,9 +296,9 @@ export default function Editor(props: EditorProps) {
               </Combobox>
 
               <Combobox
-                value={language}
+                value={props.language}
                 options={Object.keys(bundledLanguages)}
-                onChange={setLanguage}
+                onChange={props.setLanguage}
                 placeholder="Search a Language..."
                 itemComponent={props => (
                   <ComboboxItem item={props.item}>
@@ -362,8 +338,8 @@ export default function Editor(props: EditorProps) {
                         id="bg-color-input"
                         class="h-6 w-6 rounded"
                         type="color"
-                        value={bgColor}
-                        onInput={e => setBgColor(e.target.value)}
+                        value={props.bgColor}
+                        onInput={e => props.setBgColor(e.target.value)}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuSub>
@@ -372,11 +348,11 @@ export default function Editor(props: EditorProps) {
                         <DropdownMenuSubContent>
                           <DropdownMenuItem>
                             <Slider
-                              value={[yPadding]}
+                              value={[props.yPadding]}
                               minValue={0}
                               maxValue={200}
                               onChange={e => {
-                                setYPadding(e[0])
+                                props.setYPadding(e[0])
                               }}
                             >
                               <div class="flex w-full justify-between mb-2">
@@ -392,11 +368,11 @@ export default function Editor(props: EditorProps) {
 
                           <DropdownMenuItem>
                             <Slider
-                              value={[xPadding]}
+                              value={[props.xPadding]}
                               minValue={0}
                               maxValue={200}
                               onChange={e => {
-                                setXPadding(e[0])
+                                props.setXPadding(e[0])
                               }}
                             >
                               <div class="flex w-full justify-between mb-2">
@@ -421,14 +397,14 @@ export default function Editor(props: EditorProps) {
                             class="flex flex-row items-center justify-between"
                             closeOnSelect={false}
                             onSelect={() => {
-                              setShadowEnabled(!shadowEnabled)
+                              props.setShadowEnabled(!props.shadowEnabled)
                             }}
                           >
                             <Label for="shadow-checkbox">Show Shadow</Label>
                             <Checkbox
                               id="shadow-checkbox"
-                              checked={shadowEnabled}
-                              onChange={setShadowEnabled}
+                              checked={props.shadowEnabled}
+                              onChange={props.setShadowEnabled}
                             />
                           </DropdownMenuItem>
 
@@ -444,8 +420,8 @@ export default function Editor(props: EditorProps) {
                               id="shadow-color-input"
                               class="h-6 w-6 rounded"
                               type="color"
-                              value={shadowColor}
-                              onInput={e => setShadowColor(e.target.value)}
+                              value={props.shadowColor}
+                              onInput={e => props.setShadowColor(e.target.value)}
                             />
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -453,12 +429,12 @@ export default function Editor(props: EditorProps) {
                             closeOnSelect={false}
                           >
                             <Slider
-                              value={[shadowOpacity]}
+                              value={[props.shadowOpacity]}
                               step={0.01}
                               minValue={0}
                               maxValue={1}
                               onChange={e => {
-                                setShadowOpacity(e[0])
+                                props.setShadowOpacity(e[0])
                               }}
                             >
                               <div class="flex w-full justify-between mb-2">
@@ -473,11 +449,11 @@ export default function Editor(props: EditorProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Slider
-                              value={[shadowOffsetY]}
+                              value={[props.shadowOffsetY]}
                               minValue={0}
-                              maxValue={yPadding}
+                              maxValue={props.yPadding}
                               onChange={e => {
-                                setShadowOffsetY(e[0])
+                                props.setShadowOffsetY(e[0])
                               }}
                             >
                               <div class="flex w-full justify-between mb-2">
@@ -492,11 +468,11 @@ export default function Editor(props: EditorProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Slider
-                              value={[shadowBlur]}
+                              value={[props.shadowBlur]}
                               minValue={0}
                               maxValue={200}
                               onChange={e => {
-                                setShadowBlur(e[0])
+                                props.setShadowBlur(e[0])
                               }}
                             >
                               <div class="flex w-full justify-between mb-2">
@@ -545,8 +521,8 @@ export default function Editor(props: EditorProps) {
               <div
                 class="flex flex-row items-center justify-center overflow-hidden"
                 style={{
-                  background: bgColor,
-                  padding: `${yPadding}px ${xPadding}px`,
+                  background: props.bgColor,
+                  padding: `${props.yPadding}px ${props.xPadding}px`,
                 }}
               >
                 <div class="flex flex-row items-center justify-center relative margin-auto w-fit">
@@ -556,18 +532,18 @@ export default function Editor(props: EditorProps) {
                         <div
                           class="rounded"
                           style={{
-                            width: `${snippetWidth}px`,
+                            width: `${props.snippetWidth}px`,
                             'overflow-x': 'hidden',
-                            'box-shadow': shadowEnabled
-                              ? `0 ${shadowOffsetY}px ${shadowBlur}px ${shadowColor}${(
-                                  shadowOpacity * 255
-                                ).toString(16)}`
+                            'box-shadow': props.shadowEnabled
+                              ? `0 ${props.shadowOffsetY}px ${props.shadowBlur}px ${
+                                  props.shadowColor
+                                }${(props.shadowOpacity * 255).toString(16)}`
                               : 'none',
                           }}
                         >
                           <ShikiMagicMove
-                            lang={language}
-                            theme={theme}
+                            lang={props.language}
+                            theme={props.theme}
                             class="p-4 shadow-xl rounded select-none overflow-hidden !text-pretty"
                             highlighter={highlighter()}
                             code={code()}
