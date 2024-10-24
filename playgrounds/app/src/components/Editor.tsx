@@ -94,10 +94,10 @@ export default function Editor(props: EditorProps) {
     height: number
   }>()
   const [code, setCode] = createSignal(props.startCode)
+  const [hiddenCode, setHiddenCode] = createSignal(props.startCode)
   const [isResizing, setIsResizing] = createSignal(false)
   const [isLooping, setIsLooping] = createSignal(true)
   const [isGenerating, setIsGenerating] = createSignal(false)
-  const [isGenerated, setIsGenerated] = createSignal(false)
   const [gifDataUrl, setGifDataUrl] = createSignal('')
   const [isShowingGifDialog, setIsShowingGifDialog] = createSignal(false)
 
@@ -134,8 +134,6 @@ export default function Editor(props: EditorProps) {
   document.body.addEventListener('mousemove', e => {
     if (isResizing()) {
       const deltaX = e.movementX
-      console.log('mousemove')
-      // console.log(e.)
       props.setSnippetWidth(props.snippetWidth + deltaX)
     }
   })
@@ -496,12 +494,14 @@ export default function Editor(props: EditorProps) {
               <Button
                 onClick={async () => {
                   setIsGenerating(true)
+                  setHiddenCode(props.endCode)
                   setTimeout(async () => {
                     const dataUrl = await generateGifDataUrl()()
                     setGifDataUrl(dataUrl)
                     setIsGenerating(false)
                     setIsShowingGifDialog(true)
-                  }, 0)
+                    setHiddenCode(props.startCode)
+                  }, 1000)
                 }}
               >
                 {isGenerating() ? 'Generating...' : 'Generate'}
@@ -551,16 +551,37 @@ export default function Editor(props: EditorProps) {
                               duration: 800,
                               stagger: 0,
                               lineNumbers: false,
-                              onAnimationStart: async (elements, maxContainerDimensions) => {
-                                if (elements.length === 0) {
-                                  return
-                                }
-
-                                setMagicMoveElements(elements)
-                                setMaxContainerDimensions(maxContainerDimensions)
-                              },
                             }}
                           />
+                          {/* The hidden shiki that we use to generate the magic move elements */}
+                          <div
+                            aria-hidden="true"
+                            class=" absolute top-[-20000px] left-[-20000px]"
+                            style={{
+                              width: `${props.snippetWidth}px`,
+                            }}
+                          >
+                            <ShikiMagicMove
+                              lang={props.language}
+                              theme={props.theme}
+                              class="p-4 shadow-xl rounded select-none overflow-hidden !text-pretty"
+                              highlighter={highlighter()}
+                              code={hiddenCode()}
+                              options={{
+                                duration: 800,
+                                stagger: 0,
+                                lineNumbers: false,
+                                onAnimationStart: async (elements, maxContainerDimensions) => {
+                                  if (elements.length === 0) {
+                                    return
+                                  }
+
+                                  setMagicMoveElements(elements)
+                                  setMaxContainerDimensions(maxContainerDimensions)
+                                },
+                              }}
+                            />
+                          </div>
                         </div>
                         <div
                           class={clsx(
