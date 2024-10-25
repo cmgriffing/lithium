@@ -544,7 +544,7 @@ export default function Editor(props: EditorProps) {
                           <ShikiMagicMove
                             lang={props.language}
                             theme={props.theme}
-                            class="p-4 shadow-xl rounded select-none overflow-hidden !text-pretty"
+                            class="p-4 shadow-xl rounded select-none overflow-hidden"
                             highlighter={highlighter()}
                             code={code()}
                             options={{
@@ -564,7 +564,7 @@ export default function Editor(props: EditorProps) {
                             <ShikiMagicMove
                               lang={props.language}
                               theme={props.theme}
-                              class="p-4 shadow-xl rounded select-none overflow-hidden !text-pretty"
+                              class="p-4 shadow-xl rounded select-none overflow-hidden"
                               highlighter={highlighter()}
                               code={hiddenCode()}
                               options={{
