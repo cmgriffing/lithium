@@ -1,3 +1,7 @@
+/* eslint-disable antfu/if-newline */
+/* eslint-disable style/brace-style */
+/* eslint-disable style/indent */
+/* eslint-disable style/no-tabs */
 import type {
 	KeyedToken,
 	KeyedTokensInfo,
@@ -422,6 +426,16 @@ export class MagicMoveRenderer {
 		// Animate the container size
 		if (this.options.animateContainer && !this.isFirstRender) {
 			const newRect = this.container.getBoundingClientRect()
+
+			maxContainerDimensions.width = Math.max(
+				containerRect.width / scale,
+				newRect.width / scale,
+			)
+			maxContainerDimensions.height = Math.max(
+				containerRect.height / scale,
+				newRect.height / scale,
+			)
+
 			if (
 				newRect.width !== containerRect.width ||
 				newRect.height !== containerRect.height
@@ -437,15 +451,6 @@ export class MagicMoveRenderer {
 						this.container.style.transitionDelay = ''
 					this.container.style.height = `${newRect.height / scale}px`
 					this.container.style.width = `${newRect.width / scale}px`
-
-					maxContainerDimensions.width = Math.max(
-						containerRect.width / scale,
-						newRect.width / scale,
-					)
-					maxContainerDimensions.height = Math.max(
-						containerRect.height / scale,
-						newRect.height / scale,
-					)
 				})
 
 				promises.push(
